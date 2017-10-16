@@ -1,12 +1,181 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    啦啦啦啦啦啦啦啦啦啦啦啦
-</body>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			select {
+				width: 100px;
+			}
+		</style>
+		<script src="js/jquery-2.2.4.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/highcharts.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<p> 啦啦啦啦啦啦啦啦啦啦啦啦</p>
+		<select name="selS" id="selS" onchange="selS1(event)">
+		</select>
+		<select name="sels" id="sels" onchange="sels1(event)">
+		</select>
+		<select name="selx" id="selx" onchange="weather(this.value)">
+		</select>
+		<div id="container" style="min-width:800px;height:400px"></div>
+
+		<script src="js/address.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/city.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			var selS = document.querySelector('#selS');
+			var sels = document.querySelector('#sels');
+			var selx = document.querySelector('#selx');
+
+			selS.innerHTML = '<option>请选择</option>';
+			sels.innerHTML = '<option>请选择</option>';
+			selx.innerHTML = '<option>请选择</option>';
+
+			var type = '<option value="0">请选择</option>';
+
+			arrProvince.forEach(function(iemt) {
+
+				type += `<option value='${iemt.ProID}'>${iemt.name}</option>`
+
+			});
+
+			selS.innerHTML = type;
+
+			function selS1(event) {
+
+				if(selS.value) {
+					var books = '<option>请选择</option>'
+					arrCity.forEach(function(item) {
+
+						if(selS.value == item.ProID) {
+							books += `<option value='${item.CityID}'>${item.name}</option>`
+						}
+					});
+					sels.innerHTML = books;
+				} else {
+					sels.innerHTML = '<option>请选择</option>';
+				}
+
+			}
+
+			function sels1(event) {
+
+				if(sels.value) {
+					var books = '<option>请选择</option>'
+					arrArea.forEach(function(item) {
+
+						if(sels.value == item.CityID) {
+							books += `<option value='${item.DisName}'>${item.DisName}</option>`
+						}
+					});
+					selx.innerHTML = books;
+				} else {
+					selx.innerHTML = '<option>请选择</option>';
+				}
+
+			}
+
+			function weather(val) {
+
+				var dataCity = City.find(function(item) {
+
+					if(item.city == val) {
+						return item;
+					}
+
+				});
+
+				$.ajax({
+					type: "get",
+					url: "http://restapi.amap.com/v3/weather/weatherInfo",
+					data: {
+						"key": "d1a22bed9dad532dde6c530d652320c7",
+						"extensions": "all",
+						"city": dataCity.adcode
+					},
+					//请求成功后的回调函数
+					success: function(data, status, xhr) {
+						console.log(data.forecasts[0]);
+						var day = data.forecasts[0].casts.filter(function(item) {
+							return item;
+						});
+						$('#container').highcharts({
+							title: {
+								text: dataCity.city + '天气预报'
+							},
+							//日期
+							xAxis: {
+								categories: [day[0].date, day[1].date, day[2].date, day[3].date]
+							},
+							yAxis: {
+								title: {
+									text: '温度℃'
+								}
+							},
+							tooltip: {
+
+								shared: true,
+								useHTML: true,
+								headerFormat: '<small>{point.key}</small><table>',
+								pointFormat: '<tr><td style="color: {series.color}">白天温度: </td>' +
+									'<td style="text-align: right"><b>{point.y} ℃</b></td></tr>' +
+									'<tr><td style="color: {series.color}">夜晚温度: </td>' +
+									'<td style="text-align: right"><b>{point.night} ℃</b></td></tr>' +
+									'<tr><td style="color: {series.color}">天　　气: </td>' +
+									'<td style="text-align: right"><b>{point.dayweather} </b></td></tr>',
+								footerFormat: '</table>',
+								valueDecimals: 0
+
+							},
+							plotOptions: {
+								series: {
+									allowPointSelect: true,
+									dataLabels: {
+										enabled: true,
+										format: '{y} ℃'
+									}
+								}
+							},
+							series: [{
+								name: dataCity.city + '天气预报',
+								data: [{
+									y: JSON.parse(day[0].daytemp),
+									night: JSON.parse(day[0].nighttemp),
+									dayweather: day[0].dayweather
+								}, {
+									y: JSON.parse(day[1].daytemp),
+									night: JSON.parse(day[1].nighttemp),
+									dayweather: day[1].dayweather
+								}, {
+									y: JSON.parse(day[2].daytemp),
+									night: JSON.parse(day[2].nighttemp),
+									dayweather: day[2].dayweather
+								}, {
+									y: JSON.parse(day[3].daytemp),
+									night: JSON.parse(day[3].nighttemp),
+									dayweather: day[3].dayweather
+								}],
+								lineWidth: 2
+							}]
+
+						});
+					},
+					//请求发生错误
+					error: function(xhr, status, err) {
+						if(err == 'timeout') {
+							layer.alert('超时', {
+								icon: 5
+							}, function() {})
+						}
+					}
+				});
+
+			}
+		</script>
+	</body>
+
 </html>
