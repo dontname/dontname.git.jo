@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+        }
+
+      
+
+        .big-img {
+            background-image: url(img/header.jpg);
+            height: 400px; 
+            width: 100%;         
+            background-repeat: no-repeat;
+            background-position: 0 0;
+            background-size:100% 200%;
+            transform:  rotate(-3deg);
+            position: absolute;
+            top: 100px;
+            transition:  background-position 8s;
+          
+        }
+        .big-img:hover{
+        background-position:  0 -400px;
+        }
+        .s-img1{
+            background-image: url(img/img1.jpg);
+            width:300px;
+            height: 250px;
+          float: left;
+          margin-left: 300px;
+            background-size: 100% 100%;
+            
+        }
+        .s-img2{
+            background-image: url(img/img2.jpg);
+            width:300px;
+            height:250px;
+            margin-left: 300px;
+            background-size: 100% 100%;
+            float: left;
+        }
+        .s-img3{
+            background-image: url(img/img3.jpg);
+            width:300px;
+            height:250px;
+            margin-left:300px;         
+            background-size: 100% 100%;
+            float: left;
+        }
+        .box{
+            width: 100%;        
+            position: absolute;
+            top: 650px;
+           
+        }
+        .none{
+            width: 300px;
+            background-color: blue;
+            position: absolute;
+            height:0px;
+            left: 300px;
+            top: 0;
+            opacity: 0.5;
+           animation: heights 20s linear infinite;
+        }
+        .none1{
+            width: 300px;
+            background-color: blue;
+            position: absolute;
+            height:0px;
+            left: 900px;
+            opacity: 0.5;
+            top: 0;
+           animation: heights 20s linear infinite;
+        }
+        .none2{
+            width: 300px;
+            background-color: blue;
+            position: absolute;
+            height:0px;
+            left: 1500px;
+            opacity: 0.5;
+            top: 0;
+           animation: heights 20s linear infinite;
+        }
+        .clear{
+            clear: both;
+        }
+        .phone{
+            margin-top: 200px;
+           width: 700px;
+           height: 100px;
+          
+           margin-left: 38%;
+          
+
+        }
+        em{
+            color:white;
+            font-size: 50px;
+            animation: tans 10s infinite linear;
+            font-weight: bold;
+        }
+
+       
+        @keyframes heights{
+            0%{
+                height: 0px;
+            }
+            50%{
+                height: 250px;
+            }
+            75%{
+                height: 250px;
+            }
+            100%{
+                height: 0px;
+            }
+        }
+        @keyframes tans {
+            0%{
+                margin-left: 0;
+            }
+            49%{
+                margin-left: 350px;
+            }
+            50%{
+                margin-left: 350px;
+            }
+            100%{
+                margin-left: 0;
+            }
+        }
+     
+     
+      
+      
+        
+    </style>
+</head>
+
+<body>
+   
+        <div class="big-img"></div>
+       
+        <div class="box">
+            <!-- <div class="none" ></div> -->
+                <div class="s-img1"></div>
+                <!-- <div class="none1" ></div> -->
+                <div class="s-img2"></div>
+                <!-- <div class="none2"></div> -->
+                <div class="s-img3"></div>
+                <div class="clear"></div>
+                <div class="phone"><em>三星为爆炸而生</em></div>
+        </div>
+      <script>
+      var img1=document.querySelector('.s-img1')
+      var img2=document.querySelector('.s-img2')
+      var img3=document.querySelector('.s-img3')
+      var box=document.querySelector('.box')
+     
+         img1.onmouseover=function(){
+            var div = document.createElement('div');
+            div.classList.add('none');
+            box.appendChild(div)
+           
+         }
+         img1.onmouseout=function(){
+            var div = document.querySelector('.none');
+            div.classList.remove('none')
+         }
+         img2.onmouseout=function(){
+            var div = document.querySelector('.none1');
+            div.classList.remove('none1')
+         }
+         img3.onmouseout=function(){
+            var div = document.querySelector('.none2');
+            div.classList.remove('none2')
+         }
+        
+         img2.onmouseover=function(){
+            var div = document.createElement('div');
+            div.classList.add('none1');
+            box.appendChild(div)
+         }
+         img3.onmouseover=function(){
+            var div = document.createElement('div');
+            div.classList.add('none2');
+            box.appendChild(div)
+         }
+        
+     
+        
+      </script>
+   
+    
+</body>
+
+</html>
